@@ -4,6 +4,15 @@ import json
 #url = 'http://sis.rutgers.edu/oldsoc/courses.json?subject=198&semester=12018&campus=NB&level=UG'
 #url2 = 'http://sis.rutgers.edu/oldsoc/courses.json'
 
+class section():
+
+    def __init__(self, section_number, index_number):
+        self.section_number = section_number
+        self.index_number = index_number
+    
+    def __repr__(self):
+        return "Section Number: "+self.section_number+" Index Number: "+self.index_number
+
 class CheckBot(): #bot that checks if any of the tracked sections are open
 
         #Each CheckBot has a designated class to track and section numbers to check for
@@ -40,10 +49,12 @@ class CheckBot(): #bot that checks if any of the tracked sections are open
             open_sections = []
             for ru_class in data:
                 if ru_class["courseNumber"] == self.ru_class:
-                    #print(ru_class["title"])
+                    print("Checking open sections for: "+ru_class["title"])
                     for ru_section in ru_class["sections"]:
                         #print(ru_section["openStatus"])
                         if ru_section["openStatus"] == True and ru_section["number"] in self.ru_sections:
-                            open_sections.append(ru_section["number"])
+                            open_sections.append(section(ru_section["number"], ru_section["index"]))
 
+            print("Open Sections: ")
+            print(open_sections)
             return open_sections
