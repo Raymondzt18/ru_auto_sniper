@@ -1,5 +1,6 @@
 import requests
 import json
+import time
 
 #url = 'http://sis.rutgers.edu/oldsoc/courses.json?subject=198&semester=12018&campus=NB&level=UG'
 #url2 = 'http://sis.rutgers.edu/oldsoc/courses.json'
@@ -35,7 +36,14 @@ class CheckBot(): #bot that checks if any of the tracked sections are open
                 "campus": self.ru_campus, #Ex. "NB"
                 "level": self.ru_level #Ex. "UG"
             }
-            response = requests.get(base_url, params)
+
+            while True:
+                try:
+                    response = requests.get(base_url, params)
+                except Exception:
+                    time.sleep(10) #If there is an exception, try again in 10 seconds
+                    continue
+                break
 
             data = response.json() #dictionary of classes
 
